@@ -101469,16 +101469,18 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var index_1 = require("./index");
+
 var Snake =
 /** @class */
 function () {
   function Snake(s, x, y, xSpeed, ySpeed) {
     if (x === void 0) {
-      x = 100;
+      x = 0;
     }
 
     if (y === void 0) {
-      y = 100;
+      y = 0;
     }
 
     if (xSpeed === void 0) {
@@ -101498,28 +101500,29 @@ function () {
 
   ;
 
+  Snake.prototype.placeOnGrid = function () {
+    var col = Math.floor(this.s.width / index_1.squareSide);
+    var row = Math.floor(this.s.height / index_1.squareSide);
+  };
+
   Snake.prototype.steer = function (key) {
     switch (key) {
       case this.s.LEFT_ARROW:
-        console.log('left');
         this.xSpeed = -1;
         this.ySpeed = 0;
         break;
 
       case this.s.RIGHT_ARROW:
-        console.log('right');
         this.xSpeed = 1;
         this.ySpeed = 0;
         break;
 
       case this.s.UP_ARROW:
-        console.log('up');
         this.ySpeed = -1;
         this.xSpeed = 0;
         break;
 
       case this.s.DOWN_ARROW:
-        console.log('down');
         this.ySpeed = 1;
         this.xSpeed = 0;
         break;
@@ -101534,14 +101537,15 @@ function () {
   ;
 
   Snake.prototype.draw = function () {
-    this.s.rect(this.x, this.y, 20, 20);
+    this.s.rect(this.x, this.y, index_1.squareSide, index_1.squareSide);
+    this.s.fill(10, 50, 250);
   };
 
   return Snake;
 }();
 
 exports.default = Snake;
-},{}],"index.ts":[function(require,module,exports) {
+},{"./index":"index.ts"}],"index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -101553,11 +101557,13 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.squareSide = void 0;
 
 var p5_1 = __importDefault(require("p5"));
 
 var snake_1 = __importDefault(require("./snake"));
 
+exports.squareSide = 20;
 var App = new p5_1.default(function (s) {
   var snake = new snake_1.default(s);
 
@@ -101571,8 +101577,16 @@ var App = new p5_1.default(function (s) {
 
   s.draw = function () {
     snake.update();
-    s.background(100);
+    s.background(230);
     snake.draw();
+
+    for (var i = 0; i < s.width; i += exports.squareSide) {
+      s.line(i, 0, i, s.height);
+
+      for (var j = 0; j < s.height; j += exports.squareSide) {
+        s.line(0, i, s.width, i);
+      }
+    }
   };
 });
 exports.default = App;
@@ -101604,7 +101618,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63558" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65126" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
