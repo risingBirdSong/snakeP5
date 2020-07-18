@@ -6,6 +6,9 @@ const App = new p5((s: p5) => {
   s.setup = () => {
     s.createCanvas(500, 500);
   }
+  s.keyPressed = () => {
+    snake.steer(s.keyCode)
+  }
   s.draw = () => {
     snake.update();
     s.background(100);

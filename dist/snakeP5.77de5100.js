@@ -101482,7 +101482,7 @@ function () {
     }
 
     if (xSpeed === void 0) {
-      xSpeed = 1;
+      xSpeed = 0;
     }
 
     if (ySpeed === void 0) {
@@ -101495,6 +101495,36 @@ function () {
     this.xSpeed = xSpeed;
     this.ySpeed = ySpeed;
   }
+
+  ;
+
+  Snake.prototype.steer = function (key) {
+    switch (key) {
+      case this.s.LEFT_ARROW:
+        console.log('left');
+        this.xSpeed = -1;
+        this.ySpeed = 0;
+        break;
+
+      case this.s.RIGHT_ARROW:
+        console.log('right');
+        this.xSpeed = 1;
+        this.ySpeed = 0;
+        break;
+
+      case this.s.UP_ARROW:
+        console.log('up');
+        this.ySpeed = -1;
+        this.xSpeed = 0;
+        break;
+
+      case this.s.DOWN_ARROW:
+        console.log('down');
+        this.ySpeed = 1;
+        this.xSpeed = 0;
+        break;
+    }
+  };
 
   Snake.prototype.update = function () {
     this.x = this.x + this.xSpeed;
@@ -101535,6 +101565,10 @@ var App = new p5_1.default(function (s) {
     s.createCanvas(500, 500);
   };
 
+  s.keyPressed = function () {
+    snake.steer(s.keyCode);
+  };
+
   s.draw = function () {
     snake.update();
     s.background(100);
@@ -101570,7 +101604,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52135" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63558" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
