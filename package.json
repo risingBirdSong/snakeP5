@@ -1,0 +1,25 @@
+{
+  "name": "snakeP5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/risingBirdSong/snakeP5.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/risingBirdSong/snakeP5/issues"
+  },
+  "homepage": "https://github.com/risingBirdSong/snakeP5#readme",
+  "dependencies": {
+    "p5": "^1.0.0",
+    "typescript": "^3.9.7"
+  }
+}
