@@ -1,7 +1,13 @@
 import p5 from "p5";
 import { squareSide } from "./index";
+
+interface tailI {
+  x: number;
+  y: number;
+}
 class Snake {
   private direction: number;
+  public tail: tailI[] = [];
   constructor(
     public s: p5,
     public x: number,
@@ -49,13 +55,28 @@ class Snake {
     }
   }
   update() {
+    for (let i = 0; i <= this.tail.length; i++) {
+      if (i < this.tail.length - 1) {
+        let tail = this.tail;
+        this.tail[i].x = this.tail[i + 1].x;
+        this.tail[i].y = this.tail[i + 1].y;
+      }
+      if (i === this.tail.length - 1) {
+        this.tail[i].x = this.x
+        this.tail[i].y = this.y;
+      }
+    }
+    // this.tail[this.tail.length].x = this.x;
+    // this.tail[this.tail.length].y = this.y;
     this.x = Math.floor(this.x + this.xSpeed);
     this.y = Math.floor(this.y + this.ySpeed);
   };
   draw() {
-
     this.s.fill(10, 50, 250);
     this.s.rect(this.x, this.y, squareSide, squareSide);
+    for (let t of this.tail) {
+      this.s.rect(t.x, t.y, squareSide, squareSide);
+    }
   }
 }
 
