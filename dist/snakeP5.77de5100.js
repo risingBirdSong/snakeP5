@@ -101554,7 +101554,39 @@ function () {
 }();
 
 exports.default = Snake;
-},{"./index":"index.ts"}],"index.ts":[function(require,module,exports) {
+},{"./index":"index.ts"}],"helper.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function rounder(round, input, lowOrHigh) {
+  var remainder = input % round;
+
+  if (lowOrHigh) {
+    if (lowOrHigh === "low") {
+      return input - remainder;
+    } else if (lowOrHigh === "high") {
+      return input - remainder + round;
+    }
+  } //if no lowOrHigh
+
+
+  var halfWay = round / 2;
+
+  if (remainder > halfWay) {
+    return input + (round - remainder);
+  } else if (remainder <= halfWay) {
+    return input - remainder;
+  }
+
+  throw Error("input wasnt handled!");
+}
+
+console.log("rounding width", rounder(20, 250));
+exports.default = rounder;
+},{}],"index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -101572,6 +101604,8 @@ var p5_1 = __importDefault(require("p5"));
 
 var snake_1 = __importDefault(require("./snake"));
 
+var helper_1 = __importDefault(require("./helper"));
+
 exports.squareSide = 20;
 var counter = 50;
 var App = new p5_1.default(function (s) {
@@ -101580,8 +101614,12 @@ var App = new p5_1.default(function (s) {
   s.setup = function () {
     s.createCanvas(500, 500);
     s.frameRate(10);
-    var middleWidth = s.width / 2;
-    var middleHeight = s.height / 2;
+    spawnSnake();
+  };
+
+  var spawnSnake = function spawnSnake() {
+    var middleWidth = helper_1.default(exports.squareSide, s.width / 2);
+    var middleHeight = helper_1.default(exports.squareSide, s.height / 2);
     snake = new snake_1.default(s, middleWidth, middleHeight);
   };
 
@@ -101594,9 +101632,12 @@ var App = new p5_1.default(function (s) {
     s.background(230);
     snake.draw();
 
-    if (snake.x < 0) {
-      console.log(snake.x);
-      snake.x = 100;
+    if (snake.x < 0 || snake.x > s.width) {
+      snake = null;
+      spawnSnake();
+    } else if (snake.y < 0 || snake.y > s.height) {
+      snake = null;
+      spawnSnake();
     }
 
     for (var i = 0; i < s.width; i += exports.squareSide) {
@@ -101609,7 +101650,7 @@ var App = new p5_1.default(function (s) {
   };
 });
 exports.default = App;
-},{"p5":"node_modules/p5/lib/p5.js","./snake":"snake.ts"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"p5":"node_modules/p5/lib/p5.js","./snake":"snake.ts","./helper":"helper.ts"}],"../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -101637,7 +101678,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65126" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53655" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

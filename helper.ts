@@ -1,5 +1,5 @@
 
-function rounder(round: number, input: number, lowOrHigh?: "low" | "high"): number {
+function rounder(round: number, input: number, lowOrHigh?: "low" | "high") {
   let remainder = input % round;
   if (lowOrHigh) {
     if (lowOrHigh === "low") {
@@ -14,8 +14,13 @@ function rounder(round: number, input: number, lowOrHigh?: "low" | "high"): numb
   if (remainder > halfWay) {
     return input + (round - remainder)
   }
-  else if (remainder < halfWay) {
+  else if (remainder <= halfWay) {
     return input - remainder;
   }
-  return 0;
+  throw Error("input wasnt handled!");
 }
+
+console.log("rounding width", rounder(20, 250));
+
+
+export default rounder;

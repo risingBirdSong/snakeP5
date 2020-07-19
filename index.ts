@@ -1,5 +1,6 @@
 import p5 from "p5";
 import Snake from "./snake";
+import rounder from "./helper";
 export const squareSide = 20;
 let counter = 50;
 
@@ -10,8 +11,11 @@ const App = new p5((s: p5) => {
   s.setup = () => {
     s.createCanvas(500, 500);
     s.frameRate(10);
-    let middleWidth = s.width / 2;
-    let middleHeight = s.height / 2;
+    spawnSnake();
+  }
+  const spawnSnake = function () {
+    let middleWidth = rounder(squareSide, s.width / 2);
+    let middleHeight = rounder(squareSide, s.height / 2);
     snake = new Snake(s, middleWidth, middleHeight);
   }
   s.keyPressed = () => {
@@ -21,9 +25,13 @@ const App = new p5((s: p5) => {
     snake.update();
     s.background(230);
     snake.draw();
-    if (snake.x < 0) {
-      console.log(snake.x);
-      snake.x = 100;
+    if (snake.x < 0 || snake.x > s.width) {
+      snake = null;
+      spawnSnake();
+    }
+    else if (snake.y < 0 || snake.y > s.height) {
+      snake = null;
+      spawnSnake();
     }
     for (let i = 0; i < s.width; i += squareSide) {
       s.line(i, 0, i, s.height);
