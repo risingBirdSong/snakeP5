@@ -54,8 +54,8 @@ class Snake {
   };
   draw() {
 
-    this.s.rect(this.x, this.y, squareSide, squareSide);
     this.s.fill(10, 50, 250);
+    this.s.rect(this.x, this.y, squareSide, squareSide);
   }
 }
 

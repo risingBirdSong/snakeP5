@@ -101546,8 +101546,8 @@ function () {
   ;
 
   Snake.prototype.draw = function () {
-    this.s.rect(this.x, this.y, index_1.squareSide, index_1.squareSide);
     this.s.fill(10, 50, 250);
+    this.s.rect(this.x, this.y, index_1.squareSide, index_1.squareSide);
   };
 
   return Snake;
@@ -101609,18 +101609,29 @@ var helper_1 = __importDefault(require("./helper"));
 exports.squareSide = 20;
 var counter = 50;
 var App = new p5_1.default(function (s) {
+  var foodCoords;
   var snake;
 
   s.setup = function () {
     s.createCanvas(500, 500);
     s.frameRate(10);
     spawnSnake();
+    makeFood();
   };
 
   var spawnSnake = function spawnSnake() {
     var middleWidth = helper_1.default(exports.squareSide, s.width / 2);
     var middleHeight = helper_1.default(exports.squareSide, s.height / 2);
     snake = new snake_1.default(s, middleWidth, middleHeight);
+  };
+
+  var makeFood = function makeFood() {
+    var col = helper_1.default(exports.squareSide, s.random(0, s.width));
+    var row = helper_1.default(exports.squareSide, s.random(0, s.height));
+    foodCoords = {
+      x: col,
+      y: row
+    };
   };
 
   s.keyPressed = function () {
@@ -101631,6 +101642,8 @@ var App = new p5_1.default(function (s) {
     snake.update();
     s.background(230);
     snake.draw();
+    s.fill(10, 255, 10);
+    s.rect(foodCoords.x, foodCoords.y, exports.squareSide, exports.squareSide);
 
     if (snake.x < 0 || snake.x > s.width) {
       snake = null;
