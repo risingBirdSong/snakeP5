@@ -4,11 +4,14 @@ class Snake {
   private direction: number;
   constructor(
     public s: p5,
-    public x: number = 0,
-    public y: number = 0,
+    public x: number,
+    public y: number,
     private xSpeed: number = 0,
     private ySpeed: number = 0
-  ) { };
+  ) {
+    this.x = x;
+    this.y = y;
+  };
   steer(key) {
     switch (key) {
       case this.s.LEFT_ARROW:
@@ -50,6 +53,7 @@ class Snake {
     this.y = Math.floor(this.y + this.ySpeed);
   };
   draw() {
+
     this.s.rect(this.x, this.y, squareSide, squareSide);
     this.s.fill(10, 50, 250);
   }

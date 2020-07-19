@@ -3,11 +3,16 @@ import Snake from "./snake";
 export const squareSide = 20;
 let counter = 50;
 
+
 const App = new p5((s: p5) => {
-  let snake = new Snake(s);
+
+  let snake: Snake;
   s.setup = () => {
     s.createCanvas(500, 500);
     s.frameRate(10);
+    let middleWidth = s.width / 2;
+    let middleHeight = s.height / 2;
+    snake = new Snake(s, middleWidth, middleHeight);
   }
   s.keyPressed = () => {
     snake.steer(s.keyCode)
@@ -16,6 +21,10 @@ const App = new p5((s: p5) => {
     snake.update();
     s.background(230);
     snake.draw();
+    if (snake.x < 0) {
+      console.log(snake.x);
+      snake.x = 100;
+    }
     for (let i = 0; i < s.width; i += squareSide) {
       s.line(i, 0, i, s.height);
       for (let j = 0; j < s.height; j += squareSide) {

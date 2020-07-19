@@ -101475,14 +101475,6 @@ var Snake =
 /** @class */
 function () {
   function Snake(s, x, y, xSpeed, ySpeed) {
-    if (x === void 0) {
-      x = 0;
-    }
-
-    if (y === void 0) {
-      y = 0;
-    }
-
     if (xSpeed === void 0) {
       xSpeed = 0;
     }
@@ -101496,6 +101488,8 @@ function () {
     this.y = y;
     this.xSpeed = xSpeed;
     this.ySpeed = ySpeed;
+    this.x = x;
+    this.y = y;
   }
 
   ;
@@ -101581,11 +101575,14 @@ var snake_1 = __importDefault(require("./snake"));
 exports.squareSide = 20;
 var counter = 50;
 var App = new p5_1.default(function (s) {
-  var snake = new snake_1.default(s);
+  var snake;
 
   s.setup = function () {
     s.createCanvas(500, 500);
     s.frameRate(10);
+    var middleWidth = s.width / 2;
+    var middleHeight = s.height / 2;
+    snake = new snake_1.default(s, middleWidth, middleHeight);
   };
 
   s.keyPressed = function () {
@@ -101596,6 +101593,11 @@ var App = new p5_1.default(function (s) {
     snake.update();
     s.background(230);
     snake.draw();
+
+    if (snake.x < 0) {
+      console.log(snake.x);
+      snake.x = 100;
+    }
 
     for (var i = 0; i < s.width; i += exports.squareSide) {
       s.line(i, 0, i, s.height);
