@@ -101488,6 +101488,7 @@ function () {
     this.y = y;
     this.xSpeed = xSpeed;
     this.ySpeed = ySpeed;
+    this.tail = [];
     this.x = x;
     this.y = y;
   }
@@ -101539,6 +101540,21 @@ function () {
   };
 
   Snake.prototype.update = function () {
+    for (var i = 0; i <= this.tail.length; i++) {
+      if (i < this.tail.length - 1) {
+        var tail = this.tail;
+        this.tail[i].x = this.tail[i + 1].x;
+        this.tail[i].y = this.tail[i + 1].y;
+      }
+
+      if (i === this.tail.length - 1) {
+        this.tail[i].x = this.x;
+        this.tail[i].y = this.y;
+      }
+    } // this.tail[this.tail.length].x = this.x;
+    // this.tail[this.tail.length].y = this.y;
+
+
     this.x = Math.floor(this.x + this.xSpeed);
     this.y = Math.floor(this.y + this.ySpeed);
   };
@@ -101548,6 +101564,11 @@ function () {
   Snake.prototype.draw = function () {
     this.s.fill(10, 50, 250);
     this.s.rect(this.x, this.y, index_1.squareSide, index_1.squareSide);
+
+    for (var _i = 0, _a = this.tail; _i < _a.length; _i++) {
+      var t = _a[_i];
+      this.s.rect(t.x, t.y, index_1.squareSide, index_1.squareSide);
+    }
   };
 
   return Snake;
@@ -101622,16 +101643,38 @@ var App = new p5_1.default(function (s) {
   var spawnSnake = function spawnSnake() {
     var middleWidth = helper_1.default(exports.squareSide, s.width / 2);
     var middleHeight = helper_1.default(exports.squareSide, s.height / 2);
+    var firstTailX = middleWidth - 20;
+    var firstTailY = middleHeight - 20;
+    var secondTailX = middleWidth - 40;
+    var secondTailY = middleHeight - 40;
     snake = new snake_1.default(s, middleWidth, middleHeight);
+    snake.tail.push({
+      x: firstTailX,
+      y: firstTailY
+    });
+    snake.tail.push({
+      x: secondTailX,
+      y: secondTailY
+    });
   };
 
   var makeFood = function makeFood() {
-    var col = helper_1.default(exports.squareSide, s.random(0, s.width));
-    var row = helper_1.default(exports.squareSide, s.random(0, s.height));
+    var col = helper_1.default(exports.squareSide, s.random(0, s.width - exports.squareSide));
+    var row = helper_1.default(exports.squareSide, s.random(0, s.height - exports.squareSide));
     foodCoords = {
       x: col,
       y: row
     };
+  };
+
+  var eat = function eat() {
+    if (foodCoords.x === snake.x && foodCoords.y === snake.y) {
+      snake.tail.push({
+        x: foodCoords.x,
+        y: foodCoords.y
+      });
+      makeFood();
+    }
   };
 
   s.keyPressed = function () {
@@ -101639,8 +101682,9 @@ var App = new p5_1.default(function (s) {
   };
 
   s.draw = function () {
-    snake.update();
     s.background(230);
+    eat();
+    snake.update();
     snake.draw();
     s.fill(10, 255, 10);
     s.rect(foodCoords.x, foodCoords.y, exports.squareSide, exports.squareSide);
@@ -101691,7 +101735,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53655" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62378" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
