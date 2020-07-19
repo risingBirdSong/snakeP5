@@ -1,11 +1,13 @@
 import p5 from "p5";
 import Snake from "./snake";
 export const squareSide = 20;
+let counter = 50;
 
 const App = new p5((s: p5) => {
   let snake = new Snake(s);
   s.setup = () => {
     s.createCanvas(500, 500);
+    s.frameRate(10);
   }
   s.keyPressed = () => {
     snake.steer(s.keyCode)

@@ -101500,38 +101500,53 @@ function () {
 
   ;
 
-  Snake.prototype.placeOnGrid = function () {
-    var col = Math.floor(this.s.width / index_1.squareSide);
-    var row = Math.floor(this.s.height / index_1.squareSide);
-  };
-
   Snake.prototype.steer = function (key) {
     switch (key) {
       case this.s.LEFT_ARROW:
-        this.xSpeed = -1;
+        if (this.direction === this.s.RIGHT_ARROW) {
+          break;
+        }
+
+        this.direction = this.s.LEFT_ARROW;
+        this.xSpeed = -index_1.squareSide;
         this.ySpeed = 0;
         break;
 
       case this.s.RIGHT_ARROW:
-        this.xSpeed = 1;
+        if (this.direction === this.s.LEFT_ARROW) {
+          break;
+        }
+
+        this.direction = this.s.RIGHT_ARROW;
+        this.xSpeed = index_1.squareSide;
         this.ySpeed = 0;
         break;
 
       case this.s.UP_ARROW:
-        this.ySpeed = -1;
+        if (this.direction === this.s.DOWN_ARROW) {
+          break;
+        }
+
+        this.direction = this.s.UP_ARROW;
+        this.ySpeed = -index_1.squareSide;
         this.xSpeed = 0;
         break;
 
       case this.s.DOWN_ARROW:
-        this.ySpeed = 1;
+        if (this.direction === this.s.UP_ARROW) {
+          break;
+        }
+
+        this.direction = this.s.DOWN_ARROW;
+        this.ySpeed = index_1.squareSide;
         this.xSpeed = 0;
         break;
     }
   };
 
   Snake.prototype.update = function () {
-    this.x = this.x + this.xSpeed;
-    this.y = this.y + this.ySpeed;
+    this.x = Math.floor(this.x + this.xSpeed);
+    this.y = Math.floor(this.y + this.ySpeed);
   };
 
   ;
@@ -101564,11 +101579,13 @@ var p5_1 = __importDefault(require("p5"));
 var snake_1 = __importDefault(require("./snake"));
 
 exports.squareSide = 20;
+var counter = 50;
 var App = new p5_1.default(function (s) {
   var snake = new snake_1.default(s);
 
   s.setup = function () {
     s.createCanvas(500, 500);
+    s.frameRate(10);
   };
 
   s.keyPressed = function () {

@@ -1,40 +1,53 @@
 import p5 from "p5";
 import { squareSide } from "./index";
 class Snake {
+  private direction: number;
   constructor(
     public s: p5,
     public x: number = 0,
     public y: number = 0,
-    public xSpeed: number = 0,
-    public ySpeed: number = 0
+    private xSpeed: number = 0,
+    private ySpeed: number = 0
   ) { };
-  placeOnGrid() {
-    let col = Math.floor(this.s.width / squareSide);
-    let row = Math.floor(this.s.height / squareSide);
-  }
   steer(key) {
     switch (key) {
       case this.s.LEFT_ARROW:
-        this.xSpeed = -1;
+        if (this.direction === this.s.RIGHT_ARROW) {
+          break;
+        }
+        this.direction = this.s.LEFT_ARROW
+        this.xSpeed = -squareSide;
         this.ySpeed = 0;
         break;
       case this.s.RIGHT_ARROW:
-        this.xSpeed = 1;
+        if (this.direction === this.s.LEFT_ARROW) {
+          break;
+        }
+        this.direction = this.s.RIGHT_ARROW;
+        this.xSpeed = squareSide;
         this.ySpeed = 0;
         break;
       case this.s.UP_ARROW:
-        this.ySpeed = -1;
+        if (this.direction === this.s.DOWN_ARROW) {
+          break;
+        }
+        this.direction = this.s.UP_ARROW;
+        this.ySpeed = -squareSide;
         this.xSpeed = 0;
         break;
       case this.s.DOWN_ARROW:
-        this.ySpeed = 1;
+        if (this.direction === this.s.UP_ARROW) {
+          break;
+        }
+        this.direction = this.s.DOWN_ARROW;
+        this.ySpeed = squareSide;
         this.xSpeed = 0;
         break;
     }
   }
   update() {
-    this.x = this.x + this.xSpeed;
-    this.y = this.y + this.ySpeed;
+    this.x = Math.floor(this.x + this.xSpeed);
+    this.y = Math.floor(this.y + this.ySpeed);
   };
   draw() {
     this.s.rect(this.x, this.y, squareSide, squareSide);
