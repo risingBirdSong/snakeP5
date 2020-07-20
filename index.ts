@@ -99,13 +99,15 @@ const App = new p5((s: p5) => {
         s.rect(f.x, f.y, squareSide, squareSide);
       }
       if (snake.x < 0 || snake.x > s.width) {
-        snake = null;
-        spawnSnake();
+        // snake = null;
+        death = true;
+        // spawnSnake();
         resetScore();
       }
       else if (snake.y < 0 || snake.y > s.height) {
-        snake = null;
-        spawnSnake();
+        // snake = null;
+        death = true;
+        // spawnSnake();
         resetScore();
       }
       for (let i = 0; i < s.width; i += squareSide) {
@@ -134,6 +136,7 @@ const App = new p5((s: p5) => {
         let greenMapped = s.map(hstry.history, 0, highVal, 30, 150);
         let blueMapped = s.map(hstry.history, 0, highVal, 150, 255);
         let blu = Math.floor(mapped / 2);
+        s.rotate(hstry.history);
         s.fill(redMapped, greenMapped, blueMapped);
         s.stroke(1);
         s.rect(hstry.x, hstry.y, squareSide, squareSide);

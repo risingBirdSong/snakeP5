@@ -101911,12 +101911,14 @@ var App = new p5_1.default(function (s) {
       }
 
       if (snake.x < 0 || snake.x > s.width) {
-        snake = null;
-        spawnSnake();
+        // snake = null;
+        death = true; // spawnSnake();
+
         resetScore();
       } else if (snake.y < 0 || snake.y > s.height) {
-        snake = null;
-        spawnSnake();
+        // snake = null;
+        death = true; // spawnSnake();
+
         resetScore();
       }
 
@@ -101948,6 +101950,7 @@ var App = new p5_1.default(function (s) {
         var greenMapped = s.map(hstry.history, 0, highVal, 30, 150);
         var blueMapped = s.map(hstry.history, 0, highVal, 150, 255);
         var blu = Math.floor(mapped / 2);
+        s.rotate(hstry.history);
         s.fill(redMapped, greenMapped, blueMapped);
         s.stroke(1);
         s.rect(hstry.x, hstry.y, exports.squareSide, exports.squareSide);
