@@ -134,7 +134,7 @@ const App = new p5((s: p5) => {
         console.log("high val", highVal);
 
         let hstry = snake.snakehistory[i];
-        let nextHstry = snake.snakehistory[i + 2];
+        let nextHstry = snake.snakehistory[i + 3];
 
         let mapped = s.map(hstry.history, 0, highVal, 50, 255);
         console.log("mapped", mapped);

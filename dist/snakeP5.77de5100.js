@@ -101948,7 +101948,7 @@ var App = new p5_1.default(function (s) {
         var highVal = snake.snakehistory[snake.snakehistory.length - 1].history;
         console.log("high val", highVal);
         var hstry = snake.snakehistory[i];
-        var nextHstry = snake.snakehistory[i + 2];
+        var nextHstry = snake.snakehistory[i + 3];
         var mapped = s.map(hstry.history, 0, highVal, 50, 255);
         console.log("mapped", mapped);
         var redMapped = s.map(hstry.history, 0, highVal, 175, 255);
