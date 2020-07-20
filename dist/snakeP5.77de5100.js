@@ -101940,12 +101940,15 @@ var App = new p5_1.default(function (s) {
 
       for (var i = 0; i < snake.snakehistory.length; i++) {
         var highVal = snake.snakehistory[snake.snakehistory.length - 1].history;
+        console.log("high val", highVal);
         var hstry = snake.snakehistory[i];
         var mapped = s.map(hstry.history, 0, highVal, 50, 255);
-        var redMapped = s.map(hstry.history, 0, highVal, 150, 255);
-        var blu = Math.floor(mapped);
-        var red = Math.floor(redMapped);
-        s.fill(red, 0, blu);
+        console.log("mapped", mapped);
+        var redMapped = s.map(hstry.history, 0, highVal, 175, 255);
+        var greenMapped = s.map(hstry.history, 0, highVal, 30, 150);
+        var blueMapped = s.map(hstry.history, 0, highVal, 150, 255);
+        var blu = Math.floor(mapped / 2);
+        s.fill(redMapped, greenMapped, blueMapped);
         s.stroke(1);
         s.rect(hstry.x, hstry.y, exports.squareSide, exports.squareSide);
       }

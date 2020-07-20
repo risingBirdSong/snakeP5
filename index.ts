@@ -125,12 +125,16 @@ const App = new p5((s: p5) => {
       }
       for (let i = 0; i < snake.snakehistory.length; i++) {
         let highVal = snake.snakehistory[snake.snakehistory.length - 1].history;
+        console.log("high val", highVal);
+
         let hstry = snake.snakehistory[i];
         let mapped = s.map(hstry.history, 0, highVal, 50, 255);
-        let redMapped = s.map(hstry.history, 0, highVal, 150, 255);
-        let blu = Math.floor(mapped);
-        let red = Math.floor(redMapped)
-        s.fill(red, 0, blu);
+        console.log("mapped", mapped);
+        let redMapped = s.map(hstry.history, 0, highVal, 175, 255);
+        let greenMapped = s.map(hstry.history, 0, highVal, 30, 150);
+        let blueMapped = s.map(hstry.history, 0, highVal, 150, 255);
+        let blu = Math.floor(mapped / 2);
+        s.fill(redMapped, greenMapped, blueMapped);
         s.stroke(1);
         s.rect(hstry.x, hstry.y, squareSide, squareSide);
       }
