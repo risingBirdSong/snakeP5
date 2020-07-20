@@ -19,7 +19,7 @@ const App = new p5((s: p5) => {
     s.createP("score").center("horizontal").addClass("scoreLabel");
     scoreP = s.createP(score.toString())
     scoreP.center("horizontal");
-    s.frameRate(16);
+    s.frameRate(19);
     restartButton = s.createButton("restart label", "restart");
 
     restartButton.mouseClicked(() => {
@@ -120,17 +120,21 @@ const App = new p5((s: p5) => {
     else if (death === true) {
       s.background(230);
       for (let i = 0; i < s.width; i += squareSide) {
+        s.stroke(30);
+        s.strokeWeight(1)
         s.line(i, 0, i, s.height);
         for (let j = 0; j < s.height; j += squareSide) {
+          s.stroke(30);
+          s.strokeWeight(1)
           s.line(0, i, s.width, i);
         }
       }
-      for (let i = 0; i < snake.snakehistory.length - 1; i++) {
+      for (let i = 0; i < snake.snakehistory.length - 10; i++) {
         let highVal = snake.snakehistory[snake.snakehistory.length - 1].history;
         console.log("high val", highVal);
 
         let hstry = snake.snakehistory[i];
-        let nextHstry = snake.snakehistory[i + 3];
+        let nextHstry = snake.snakehistory[i + 2];
 
         let mapped = s.map(hstry.history, 0, highVal, 50, 255);
         console.log("mapped", mapped);
@@ -144,9 +148,10 @@ const App = new p5((s: p5) => {
         s.fill(redMapped, greenMapped, blueMapped);
         // s.rect(hstry.x, hstry.y, strokeMap, strokeMap);
         // s.strokeWeight(strokeMap);
-        s.line(hstry.x, hstry.y, nextHstry.x, nextHstry.y);
         s.strokeWeight(5);
         s.stroke(redMapped, greenMapped, blueMapped);
+        s.line(hstry.x, hstry.y, nextHstry.x, nextHstry.y);
+        // s.pop();
       }
     }
   }

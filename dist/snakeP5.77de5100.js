@@ -101799,7 +101799,7 @@ var App = new p5_1.default(function (s) {
     s.createP("score").center("horizontal").addClass("scoreLabel");
     scoreP = s.createP(score.toString());
     scoreP.center("horizontal");
-    s.frameRate(16);
+    s.frameRate(19);
     restartButton = s.createButton("restart label", "restart");
     restartButton.mouseClicked(function () {
       console.log("restart please");
@@ -101933,18 +101933,22 @@ var App = new p5_1.default(function (s) {
       s.background(230);
 
       for (var i = 0; i < s.width; i += exports.squareSide) {
+        s.stroke(30);
+        s.strokeWeight(1);
         s.line(i, 0, i, s.height);
 
         for (var j = 0; j < s.height; j += exports.squareSide) {
+          s.stroke(30);
+          s.strokeWeight(1);
           s.line(0, i, s.width, i);
         }
       }
 
-      for (var i = 0; i < snake.snakehistory.length - 1; i++) {
+      for (var i = 0; i < snake.snakehistory.length - 10; i++) {
         var highVal = snake.snakehistory[snake.snakehistory.length - 1].history;
         console.log("high val", highVal);
         var hstry = snake.snakehistory[i];
-        var nextHstry = snake.snakehistory[i + 3];
+        var nextHstry = snake.snakehistory[i + 2];
         var mapped = s.map(hstry.history, 0, highVal, 50, 255);
         console.log("mapped", mapped);
         var redMapped = s.map(hstry.history, 0, highVal, 175, 255);
@@ -101956,9 +101960,9 @@ var App = new p5_1.default(function (s) {
         s.fill(redMapped, greenMapped, blueMapped); // s.rect(hstry.x, hstry.y, strokeMap, strokeMap);
         // s.strokeWeight(strokeMap);
 
-        s.line(hstry.x, hstry.y, nextHstry.x, nextHstry.y);
         s.strokeWeight(5);
         s.stroke(redMapped, greenMapped, blueMapped);
+        s.line(hstry.x, hstry.y, nextHstry.x, nextHstry.y); // s.pop();
       }
     }
   };
