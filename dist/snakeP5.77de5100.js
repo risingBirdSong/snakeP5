@@ -101799,7 +101799,7 @@ var App = new p5_1.default(function (s) {
     s.createP("score").center("horizontal").addClass("scoreLabel");
     scoreP = s.createP(score.toString());
     scoreP.center("horizontal");
-    s.frameRate(15);
+    s.frameRate(16);
     restartButton = s.createButton("restart label", "restart");
     restartButton.mouseClicked(function () {
       console.log("restart please");
@@ -101940,20 +101940,25 @@ var App = new p5_1.default(function (s) {
         }
       }
 
-      for (var i = 0; i < snake.snakehistory.length; i++) {
+      for (var i = 0; i < snake.snakehistory.length - 1; i++) {
         var highVal = snake.snakehistory[snake.snakehistory.length - 1].history;
         console.log("high val", highVal);
         var hstry = snake.snakehistory[i];
+        var nextHstry = snake.snakehistory[i + 3];
         var mapped = s.map(hstry.history, 0, highVal, 50, 255);
         console.log("mapped", mapped);
         var redMapped = s.map(hstry.history, 0, highVal, 175, 255);
         var greenMapped = s.map(hstry.history, 0, highVal, 30, 150);
         var blueMapped = s.map(hstry.history, 0, highVal, 150, 255);
+        var strokeMap = s.map(hstry.history, 0, highVal, 0, 20);
+        var rotateMap = s.map(hstry.history, 0, highVal, 0, 360);
         var blu = Math.floor(mapped / 2);
-        s.rotate(hstry.history);
-        s.fill(redMapped, greenMapped, blueMapped);
-        s.stroke(1);
-        s.rect(hstry.x, hstry.y, exports.squareSide, exports.squareSide);
+        s.fill(redMapped, greenMapped, blueMapped); // s.rect(hstry.x, hstry.y, strokeMap, strokeMap);
+        // s.strokeWeight(strokeMap);
+
+        s.line(hstry.x, hstry.y, nextHstry.x, nextHstry.y);
+        s.strokeWeight(5);
+        s.stroke(redMapped, greenMapped, blueMapped);
       }
     }
   };

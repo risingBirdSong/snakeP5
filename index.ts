@@ -19,7 +19,7 @@ const App = new p5((s: p5) => {
     s.createP("score").center("horizontal").addClass("scoreLabel");
     scoreP = s.createP(score.toString())
     scoreP.center("horizontal");
-    s.frameRate(15);
+    s.frameRate(16);
     restartButton = s.createButton("restart label", "restart");
 
     restartButton.mouseClicked(() => {
@@ -125,21 +125,28 @@ const App = new p5((s: p5) => {
           s.line(0, i, s.width, i);
         }
       }
-      for (let i = 0; i < snake.snakehistory.length; i++) {
+      for (let i = 0; i < snake.snakehistory.length - 1; i++) {
         let highVal = snake.snakehistory[snake.snakehistory.length - 1].history;
         console.log("high val", highVal);
 
         let hstry = snake.snakehistory[i];
+        let nextHstry = snake.snakehistory[i + 3];
+
         let mapped = s.map(hstry.history, 0, highVal, 50, 255);
         console.log("mapped", mapped);
         let redMapped = s.map(hstry.history, 0, highVal, 175, 255);
         let greenMapped = s.map(hstry.history, 0, highVal, 30, 150);
         let blueMapped = s.map(hstry.history, 0, highVal, 150, 255);
+        let strokeMap = s.map(hstry.history, 0, highVal, 0, 20);
+        let rotateMap = s.map(hstry.history, 0, highVal, 0, 360);
         let blu = Math.floor(mapped / 2);
-        s.rotate(hstry.history);
+
         s.fill(redMapped, greenMapped, blueMapped);
-        s.stroke(1);
-        s.rect(hstry.x, hstry.y, squareSide, squareSide);
+        // s.rect(hstry.x, hstry.y, strokeMap, strokeMap);
+        // s.strokeWeight(strokeMap);
+        s.line(hstry.x, hstry.y, nextHstry.x, nextHstry.y);
+        s.strokeWeight(5);
+        s.stroke(redMapped, greenMapped, blueMapped);
       }
     }
   }
