@@ -101630,50 +101630,77 @@ var helper_1 = __importDefault(require("./helper"));
 exports.squareSide = 20;
 var counter = 50;
 var App = new p5_1.default(function (s) {
+  var score = 0;
+  var scoreP;
+  var foodArr = [];
   var foodCoords;
   var snake;
 
   s.setup = function () {
     s.createCanvas(500, 500);
-    s.frameRate(10);
+    s.createP("score").center("horizontal").addClass("scoreLabel");
+    scoreP = s.createP(score.toString());
+    scoreP.center("horizontal");
+    s.frameRate(15);
     spawnSnake();
+    makeFood();
+    makeFood();
+    makeFood();
+    makeFood();
     makeFood();
   };
 
   var spawnSnake = function spawnSnake() {
     var middleWidth = helper_1.default(exports.squareSide, s.width / 2);
     var middleHeight = helper_1.default(exports.squareSide, s.height / 2);
-    var firstTailX = middleWidth - 20;
-    var firstTailY = middleHeight - 20;
-    var secondTailX = middleWidth - 40;
-    var secondTailY = middleHeight - 40;
     snake = new snake_1.default(s, middleWidth, middleHeight);
-    snake.tail.push({
-      x: firstTailX,
-      y: firstTailY
-    });
-    snake.tail.push({
-      x: secondTailX,
-      y: secondTailY
-    });
   };
 
   var makeFood = function makeFood() {
     var col = helper_1.default(exports.squareSide, s.random(0, s.width - exports.squareSide));
     var row = helper_1.default(exports.squareSide, s.random(0, s.height - exports.squareSide));
-    foodCoords = {
+    foodArr.push({
       x: col,
       y: row
-    };
+    }); // foodCoords = { x: col, y: row }
+  };
+
+  var snakeEatsItself = function snakeEatsItself() {
+    for (var i = 0; i < snake.tail.length - 1; i++) {
+      var t = snake.tail[i];
+
+      if (t.x === snake.x && t.y === snake.y) {
+        snake = null;
+        spawnSnake();
+        resetScore();
+      }
+    }
+  };
+
+  var resetScore = function resetScore() {
+    score = 0;
+    scoreP.remove();
+    scoreP = s.createP(score.toString());
+    scoreP.center("horizontal");
   };
 
   var eat = function eat() {
-    if (foodCoords.x === snake.x && foodCoords.y === snake.y) {
-      snake.tail.push({
-        x: foodCoords.x,
-        y: foodCoords.y
-      });
-      makeFood();
+    for (var i = 0; i < foodArr.length; i++) {
+      var f = foodArr[i];
+
+      if (f.x === snake.x && f.y === snake.y) {
+        score++;
+        scoreP.value(score);
+        scoreP.remove();
+        scoreP = s.createP(score.toString());
+        scoreP.center("horizontal");
+        snake.tail.push({
+          x: f.x,
+          y: f.y
+        });
+        foodArr.splice(i, 1);
+        makeFood();
+      }
     }
   };
 
@@ -101684,17 +101711,24 @@ var App = new p5_1.default(function (s) {
   s.draw = function () {
     s.background(230);
     eat();
+    snakeEatsItself();
     snake.update();
     snake.draw();
-    s.fill(10, 255, 10);
-    s.rect(foodCoords.x, foodCoords.y, exports.squareSide, exports.squareSide);
+
+    for (var _i = 0, foodArr_1 = foodArr; _i < foodArr_1.length; _i++) {
+      var f = foodArr_1[_i];
+      s.fill(10, 255, 10);
+      s.rect(f.x, f.y, exports.squareSide, exports.squareSide);
+    }
 
     if (snake.x < 0 || snake.x > s.width) {
       snake = null;
       spawnSnake();
+      resetScore();
     } else if (snake.y < 0 || snake.y > s.height) {
       snake = null;
       spawnSnake();
+      resetScore();
     }
 
     for (var i = 0; i < s.width; i += exports.squareSide) {
@@ -101735,7 +101769,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62378" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49268" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
