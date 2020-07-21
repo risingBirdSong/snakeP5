@@ -101471,6 +101471,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var index_1 = require("./index");
 
+var historyCount = 0;
+
 var Snake =
 /** @class */
 function () {
@@ -101489,6 +101491,7 @@ function () {
     this.xSpeed = xSpeed;
     this.ySpeed = ySpeed;
     this.tail = [];
+    this.snakehistory = [];
     this.x = x;
     this.y = y;
   }
@@ -101551,12 +101554,11 @@ function () {
         this.tail[i].x = this.x;
         this.tail[i].y = this.y;
       }
-    } // this.tail[this.tail.length].x = this.x;
-    // this.tail[this.tail.length].y = this.y;
-
+    }
 
     this.x = Math.floor(this.x + this.xSpeed);
     this.y = Math.floor(this.y + this.ySpeed);
+    historyCount++;
   };
 
   ;
@@ -101564,6 +101566,16 @@ function () {
   Snake.prototype.draw = function () {
     this.s.fill(10, 50, 250);
     this.s.rect(this.x, this.y, index_1.squareSide, index_1.squareSide);
+    this.snakehistory.push({
+      x: this.x,
+      y: this.y,
+      history: historyCount
+    });
+
+    if (historyCount % 100 === 0) {
+      var blah = "blah";
+      console.log("snake history", this.snakehistory);
+    }
 
     for (var _i = 0, _a = this.tail; _i < _a.length; _i++) {
       var t = _a[_i];
@@ -101610,6 +101622,149 @@ exports.default = rounder;
 },{}],"index.ts":[function(require,module,exports) {
 "use strict";
 
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = this && this.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function sent() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) {
+      try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+
+          case 4:
+            _.label++;
+            return {
+              value: op[1],
+              done: false
+            };
+
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+
+          case 7:
+            op = _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+
+              _.ops.push(op);
+
+              break;
+            }
+
+            if (t[2]) _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+        }
+
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
+
 var __importDefault = this && this.__importDefault || function (mod) {
   return mod && mod.__esModule ? mod : {
     "default": mod
@@ -101634,14 +101789,22 @@ var App = new p5_1.default(function (s) {
   var scoreP;
   var foodArr = [];
   var foodCoords;
+  var active = false;
+  var death = false;
   var snake;
+  var restartButton;
 
   s.setup = function () {
     s.createCanvas(500, 500);
     s.createP("score").center("horizontal").addClass("scoreLabel");
     scoreP = s.createP(score.toString());
     scoreP.center("horizontal");
-    s.frameRate(15);
+    s.frameRate(19);
+    restartButton = s.createButton("restart label", "restart");
+    restartButton.mouseClicked(function () {
+      console.log("restart please");
+      death = false;
+    });
     spawnSnake();
     makeFood();
     makeFood();
@@ -101666,22 +101829,46 @@ var App = new p5_1.default(function (s) {
   };
 
   var snakeEatsItself = function snakeEatsItself() {
+    restartButton.show();
+
     for (var i = 0; i < snake.tail.length - 1; i++) {
       var t = snake.tail[i];
 
       if (t.x === snake.x && t.y === snake.y) {
-        snake = null;
-        spawnSnake();
-        resetScore();
+        // snake = null;
+        if (active === true) {
+          death = true;
+        } // spawnSnake();
+        // resetScore();
+
       }
     }
   };
 
   var resetScore = function resetScore() {
-    score = 0;
-    scoreP.remove();
-    scoreP = s.createP(score.toString());
-    scoreP.center("horizontal");
+    return __awaiter(void 0, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4
+            /*yield*/
+            , new Promise(function (res, rej) {
+              setTimeout(res, 2000);
+            })];
+
+          case 1:
+            _a.sent();
+
+            score = 0;
+            scoreP.remove();
+            scoreP = s.createP(score.toString());
+            scoreP.center("horizontal");
+            return [2
+            /*return*/
+            ];
+        }
+      });
+    });
   };
 
   var eat = function eat() {
@@ -101689,6 +101876,7 @@ var App = new p5_1.default(function (s) {
       var f = foodArr[i];
 
       if (f.x === snake.x && f.y === snake.y) {
+        active = true;
         score++;
         scoreP.value(score);
         scoreP.remove();
@@ -101709,33 +101897,72 @@ var App = new p5_1.default(function (s) {
   };
 
   s.draw = function () {
-    s.background(230);
-    eat();
-    snakeEatsItself();
-    snake.update();
-    snake.draw();
+    if (death === false) {
+      s.background(230);
+      eat();
+      snakeEatsItself();
+      snake.update();
+      snake.draw();
 
-    for (var _i = 0, foodArr_1 = foodArr; _i < foodArr_1.length; _i++) {
-      var f = foodArr_1[_i];
-      s.fill(10, 255, 10);
-      s.rect(f.x, f.y, exports.squareSide, exports.squareSide);
-    }
+      for (var _i = 0, foodArr_1 = foodArr; _i < foodArr_1.length; _i++) {
+        var f = foodArr_1[_i];
+        s.fill(10, 255, 10);
+        s.rect(f.x, f.y, exports.squareSide, exports.squareSide);
+      }
 
-    if (snake.x < 0 || snake.x > s.width) {
-      snake = null;
-      spawnSnake();
-      resetScore();
-    } else if (snake.y < 0 || snake.y > s.height) {
-      snake = null;
-      spawnSnake();
-      resetScore();
-    }
+      if (snake.x < 0 || snake.x > s.width) {
+        // snake = null;
+        death = true; // spawnSnake();
 
-    for (var i = 0; i < s.width; i += exports.squareSide) {
-      s.line(i, 0, i, s.height);
+        resetScore();
+      } else if (snake.y < 0 || snake.y > s.height) {
+        // snake = null;
+        death = true; // spawnSnake();
 
-      for (var j = 0; j < s.height; j += exports.squareSide) {
-        s.line(0, i, s.width, i);
+        resetScore();
+      }
+
+      for (var i = 0; i < s.width; i += exports.squareSide) {
+        s.line(i, 0, i, s.height);
+
+        for (var j = 0; j < s.height; j += exports.squareSide) {
+          s.line(0, i, s.width, i);
+        }
+      }
+    } else if (death === true) {
+      s.background(230);
+
+      for (var i = 0; i < s.width; i += exports.squareSide) {
+        s.stroke(30);
+        s.strokeWeight(1);
+        s.line(i, 0, i, s.height);
+
+        for (var j = 0; j < s.height; j += exports.squareSide) {
+          s.stroke(30);
+          s.strokeWeight(1);
+          s.line(0, i, s.width, i);
+        }
+      }
+
+      for (var i = 0; i < snake.snakehistory.length - 10; i++) {
+        var highVal = snake.snakehistory[snake.snakehistory.length - 1].history;
+        console.log("high val", highVal);
+        var hstry = snake.snakehistory[i];
+        var nextHstry = snake.snakehistory[i + 3];
+        var mapped = s.map(hstry.history, 0, highVal, 50, 255);
+        console.log("mapped", mapped);
+        var redMapped = s.map(hstry.history, 0, highVal, 175, 255);
+        var greenMapped = s.map(hstry.history, 0, highVal, 30, 150);
+        var blueMapped = s.map(hstry.history, 0, highVal, 150, 255);
+        var strokeMap = s.map(hstry.history, 0, highVal, 0, 20);
+        var rotateMap = s.map(hstry.history, 0, highVal, 0, 360);
+        var blu = Math.floor(mapped / 2);
+        s.fill(redMapped, greenMapped, blueMapped); // s.rect(hstry.x, hstry.y, strokeMap, strokeMap);
+        // s.strokeWeight(strokeMap);
+
+        s.strokeWeight(5);
+        s.stroke(redMapped, greenMapped, blueMapped);
+        s.line(hstry.x, hstry.y, nextHstry.x, nextHstry.y); // s.pop();
       }
     }
   };
@@ -101769,7 +101996,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49268" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58065" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

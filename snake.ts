@@ -1,13 +1,19 @@
 import p5 from "p5";
 import { squareSide } from "./index";
 
+let historyCount = 0;
 interface tailI {
   x: number;
   y: number;
 }
+
+interface historyI extends tailI {
+  history: number;
+}
 class Snake {
   private direction: number;
   public tail: tailI[] = [];
+  public snakehistory: historyI[] = [];
   constructor(
     public s: p5,
     public x: number,
@@ -66,14 +72,18 @@ class Snake {
         this.tail[i].y = this.y;
       }
     }
-    // this.tail[this.tail.length].x = this.x;
-    // this.tail[this.tail.length].y = this.y;
     this.x = Math.floor(this.x + this.xSpeed);
     this.y = Math.floor(this.y + this.ySpeed);
+    historyCount++;
   };
   draw() {
     this.s.fill(10, 50, 250);
     this.s.rect(this.x, this.y, squareSide, squareSide);
+    this.snakehistory.push({ x: this.x, y: this.y, history: historyCount });
+    if (historyCount % 100 === 0) {
+      let blah = "blah";
+      console.log("snake history", this.snakehistory);
+    }
     for (let t of this.tail) {
       this.s.rect(t.x, t.y, squareSide, squareSide);
     }
